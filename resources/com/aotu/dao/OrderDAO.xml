@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.OrderDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Order" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="trade_fee_rate" property="tradeFeeRate" jdbcType="DECIMAL" />
+	    <result column="settle_fee_normal" property="settleFeeNormal" jdbcType="DECIMAL" />
+	    <result column="settle_max" property="settleMax" jdbcType="DECIMAL" />
+	    <result column="trade_amt" property="tradeAmt" jdbcType="DECIMAL" />
+	    <result column="take_amt" property="takeAmt" jdbcType="DECIMAL" />
+	    <result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
+	    <result column="trade_status" property="tradeStatus" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Order" >
+    	INSERT INTO biz_order
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		order_no,
+      		customer_id,
+      		channel_id,
+      		trade_fee_rate,
+      		settle_fee_normal,
+      		settle_max,
+      		trade_amt,
+      		take_amt,
+      		trade_time,
+      		trade_status,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{orderNo,jdbcType=VARCHAR},
+      		#{customerId,jdbcType=VARCHAR},
+      		#{channelId,jdbcType=VARCHAR},
+      		#{tradeFeeRate,jdbcType=DECIMAL},
+      		#{settleFeeNormal,jdbcType=DECIMAL},
+      		#{settleMax,jdbcType=DECIMAL},
+      		#{tradeAmt,jdbcType=DECIMAL},
+      		#{takeAmt,jdbcType=DECIMAL},
+      		#{tradeTime,jdbcType=TIMESTAMP},
+      		#{tradeStatus,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_order WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Order" >
+    	UPDATE biz_order
+    	<set >
+     		id = #{id,jdbcType=VARCHAR},
+      		order_no = #{orderNo,jdbcType=VARCHAR},
+      		customer_id = #{customerId,jdbcType=VARCHAR},
+      		channel_id = #{channelId,jdbcType=VARCHAR},
+      		trade_fee_rate = #{tradeFeeRate,jdbcType=DECIMAL},
+      		settle_fee_normal = #{settleFeeNormal,jdbcType=DECIMAL},
+      		settle_max = #{settleMax,jdbcType=DECIMAL},
+      		trade_amt = #{tradeAmt,jdbcType=DECIMAL},
+      		take_amt = #{takeAmt,jdbcType=DECIMAL},
+      		trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+      		trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_order
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_order WHERE 1=1
+    	<if test="obj.orderNo != null and obj.orderNo !=''" >AND order_no = ${obj.orderNo}</if>
+    	limit ${startIndex},${pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Order" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_order WHERE 1=1
+    	<if test="orderNo != null and orderNo!=''">AND order_no = #{orderNo}</if>
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CustomerApplyDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.CustomerApply" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="customer_type" property="customerType" jdbcType="VARCHAR" />
+	    <result column="approve_user_id" property="approveUserId" jdbcType="VARCHAR" />
+	    <result column="approve_result" property="approveResult" jdbcType="VARCHAR" />
+	    <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP" />
+	    <result column="approve_opinion" property="approveOpinion" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.CustomerApply" >
+    	insert into biz_customer_apply
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		customer_id,
+      		customer_type,
+      		approve_user_id,
+      		approve_result,
+      		approve_time,
+      		approve_opinion,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{customerId,jdbcType=VARCHAR},
+      		#{customerType,jdbcType=VARCHAR},
+      		#{approveUserId,jdbcType=VARCHAR},
+      		#{approveResult,jdbcType=VARCHAR},
+      		#{approveTime,jdbcType=TIMESTAMP},
+      		#{approveOpinion,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_customer_apply WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.CustomerApply" >
+    	UPDATE biz_customer_apply
+    	<set >
+     		customer_id = #{customerId,jdbcType=VARCHAR},
+       		customer_type = #{customerType,jdbcType=VARCHAR},
+      		approve_user_id = #{approveUserId,jdbcType=VARCHAR},
+       		approve_result = #{approveResult,jdbcType=VARCHAR},
+      		approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      		approve_opinion = #{approveOpinion,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_customer_apply
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_customer_apply WHERE 1=1
+  			<if test="obj.approveOpinion != null" >AND approve_opinion = #{obj.approveOpinion}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.CustomerApply" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_customer_apply WHERE 1=1
+    		<if test="approveOpinion != null" >AND approve_opinion = #{approveOpinion}</if>
+    		<if test="approveTime != null" >AND approve_time = #{approveTime}</if>
+  	</select>
+  	
+</mapper>

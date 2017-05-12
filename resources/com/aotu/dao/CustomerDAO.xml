@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CustomerDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Customer" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="customer_no" property="customerNo" jdbcType="VARCHAR" />
+	    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+	    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="idcard_no" property="idcardNo" jdbcType="VARCHAR" />
+	    <result column="idcard_address" property="idcardAddress" jdbcType="VARCHAR" />
+	    <result column="idcard_front_picture_id" property="idcardFrontPictureId" jdbcType="VARCHAR" />
+	    <result column="idcard_back_picture_id" property="idcardBackPictureId" jdbcType="VARCHAR" />
+	    <result column="idcard_half_picture_id" property="idcardHalfPictureId" jdbcType="VARCHAR" />
+	    <result column="parent_customer_id" property="parentCustomerId" jdbcType="VARCHAR" />
+	    <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
+	    <result column="pay_password" property="payPassword" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="is_company" property="isCompany" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+	    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Customer" >
+    	INSERT INTO biz_customer
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		customer_no,
+      		real_name,
+      		nick_name,
+      		phone,
+      		idcard_no,
+      		idcard_address,
+      		idcard_front_picture_id,
+      		idcard_back_picture_id,
+      		idcard_half_picture_id,
+      		parent_customer_id,
+      		login_password,
+      		pay_password,
+      		type,
+      		is_company,
+      		status,
+      		company_id,
+      		brand_id,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{customerNo,jdbcType=VARCHAR},
+      		#{realName,jdbcType=VARCHAR},
+      		#{nickName,jdbcType=VARCHAR},
+      		#{phone,jdbcType=VARCHAR},
+      		#{idcardNo,jdbcType=VARCHAR},
+      		#{idcardAddress,jdbcType=VARCHAR},
+      		#{idcardFrontPictureId,jdbcType=VARCHAR},
+      		#{idcardBackPictureId,jdbcType=VARCHAR},
+      		#{idcardHalfPictureId,jdbcType=VARCHAR},
+      		#{parentCustomerId,jdbcType=VARCHAR},
+      		#{loginPassword,jdbcType=VARCHAR},
+      		#{payPassword,jdbcType=VARCHAR},
+      		#{type,jdbcType=VARCHAR},
+      		#{status,jdbcType=VARCHAR},
+      		#{isCompany,jdbcType=VARCHAR},
+      		#{companyId,jdbcType=VARCHAR},
+      		#{brandId,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_costomer WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Customer" >
+    	UPDATE biz_customer
+    	<set >
+     		customer_no = #{customerNo,jdbcType=VARCHAR},
+       		real_name = #{realName,jdbcType=VARCHAR},
+      		nick_name = #{nickName,jdbcType=VARCHAR},
+       		phone = #{phone,jdbcType=VARCHAR},
+      		idcard_no = #{idcardNo,jdbcType=VARCHAR},
+      		idcard_address = #{idcardAddress,jdbcType=VARCHAR},
+      		idcard_front_picture_id = #{idcardFrontPictureId,jdbcType=VARCHAR},
+      		idcard_back_picture_id = #{idcardBackPictureId,jdbcType=VARCHAR},
+      		idcard_half_picture_id = #{idcardHalfPictureId,jdbcType=VARCHAR},
+      		parent_customer_id = #{parentCustomerId,jdbcType=VARCHAR},
+      		login_password = #{loginPassword,jdbcType=VARCHAR},
+      		pay_password = #{payPassword,jdbcType=VARCHAR},
+      		type = #{type,jdbcType=VARCHAR},
+      		is_company = #{isCompany,jdbcType=VARCHAR},
+      		status = #{status,jdbcType=VARCHAR},
+      		company_id = #{companyId,jdbcType=VARCHAR},
+      		brand_id = #{brandId,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_customer
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT cust.*,bra.brand_name,biz_company.full_name FROM biz_customer cust,biz_brand bra, biz_company  WHERE 1=1 AND cust.brand_id=bra.id AND cust.company_id=biz_company.id 
+  			<if test="obj.companyId != null" >AND company_id = #{obj.companyId}</if>
+  			<if test="obj.companyIds != null and obj.companyIds != ''" >AND company_id in (${obj.companyIds})</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Customer" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_customer WHERE 1=1 
+    		<if test="companyId != null" >AND company_id = #{companyId}</if>
+    		<if test="companyIds != null and companyIds != ''" >AND company_id in (${companyIds})</if>
+    		<if test="status != null" >AND status = #{status}</if>
+  	</select>
+  	
+	<select id="queryList" parameterType="com.aotu.entity.Customer" resultMap="BaseResultMap">
+		SELECT * FROM biz_customer WHERE 1=1
+    	<if test="companyIds != null and companyIds != ''" > AND company_id in (${companyIds})</if>
+    	<if test="phone != null">AND phone = #{phone}</if>
+    	<if test="brandId != null">AND brand_id = #{brandId}</if>
+    	<if test="loginPassword != null">AND login_password = #{loginPassword}</if>
+  	</select>
+  	
+  	<select id="querySubCustomerList" parameterType="com.aotu.entity.Customer" resultMap="BaseResultMap">
+		SELECT * FROM biz_customer WHERE parentCustomerId = #{id}
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CompanyDefaultRateDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.CompanyDefaultRate" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="company_type" property="companyType" jdbcType="VARCHAR" />
+	    <result column="company_type_name" property="companyTypeName" jdbcType="VARCHAR" />
+	    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="trade_rate" property="tradeRate" jdbcType="DECIMAL" />
+	    <result column="normal_fee" property="normalFee" jdbcType="DECIMAL" />
+	    <result column="night_fee" property="nightFee" jdbcType="DECIMAL" />
+	    <result column="holiday_fee" property="holidayFee" jdbcType="DECIMAL" />
+	    <result column="cash_max" property="cashMax" jdbcType="DECIMAL" />
+	    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+	    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+	     <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+	     <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.CompanyDefaultRate" >
+    	INSERT INTO biz_company_default_rate
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		company_type,
+      		company_type_name,
+      		channel_id,
+      		trade_rate,
+      		normal_fee,
+      		night_fee,
+      		holiday_fee,
+      		cash_max,
+      		brand_id,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{companyType,jdbcType=VARCHAR},
+      		#{companyTypeName,jdbcType=VARCHAR},
+      		#{channelId,jdbcType=VARCHAR},
+      		#{tradeRate,jdbcType=VARCHAR},
+      		#{normalFee,jdbcType=DECIMAL},
+      		#{nightFee,jdbcType=DECIMAL},
+      		#{holidayFee,jdbcType=DECIMAL},
+      		#{cashMax,jdbcType=DECIMAL},
+      		#{brandId,jdbcType=DECIMAL},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_company_default_rate WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.CompanyDefaultRate" >
+    	UPDATE biz_company_default_rate
+    	<set >
+     		company_type = #{companyType,jdbcType=VARCHAR},
+     		company_type_name = #{companyTypeName,jdbcType=VARCHAR},
+       		channel_id = #{channelId,jdbcType=VARCHAR},
+      		trade_rate = #{tradeRate,jdbcType=DECIMAL},
+       		normal_fee = #{normalFee,jdbcType=DECIMAL},
+      		night_fee = #{nightFee,jdbcType=DECIMAL},
+      		holiday_fee = #{holidayFee,jdbcType=DECIMAL},
+      		cash_max = #{cashMax,jdbcType=DECIMAL},
+      		brand_id = #{brandId,jdbcType=DECIMAL},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_company_default_rate
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT comp.*,bra.brand_name, biz_channel.channel_name FROM biz_company_default_rate comp , biz_brand bra,biz_channel WHERE 1=1 AND comp.brand_id=bra.id AND comp.channel_id=biz_channel.id
+  			<if test="obj.brandId != null" >AND comp.brand_id = #{obj.brandId}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.CompanyDefaultRate" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_company_default_rate WHERE 1=1
+    		<if test="brandId != null" >AND brand_id = #{brandId}</if>
+  	</select>
+  	
+</mapper>

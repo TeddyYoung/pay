@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CashDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Cash" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="cash_no" property="cashNo" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="trade_rate" property="tradeRate" jdbcType="DECIMAL" />
+	    <result column="cash_fee" property="cashFee" jdbcType="DECIMAL" />
+	    <result column="cash_max" property="cashMax" jdbcType="DECIMAL" />
+	    <result column="cash_amt" property="cashAmt" jdbcType="DECIMAL" />
+	    <result column="cash_type" property="cashType" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
+	    <result column="deal_user_id" property="dealUserId" jdbcType="VARCHAR" />
+	    <result column="deal_date" property="dealDate" jdbcType="TIMESTAMP" />
+	    <result column="deposit_bank" property="depositBank" jdbcType="VARCHAR" />
+	    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+	    <result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Cash" >
+    	INSERT INTO biz_cash
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		cash_no,
+      		customer_id,
+      		trade_rate,
+      		cash_fee,
+      		cash_max,
+      		cash_amt,
+      		cash_type,
+      		status,
+      		apply_date,
+      		deal_user_id,
+      		deal_date,
+      		deposit_bank,
+      		bank_name,
+      		account_no,
+      		name,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{cashNo,jdbcType=VARCHAR},
+      		#{customerId,jdbcType=VARCHAR},
+      		#{tradeRate,jdbcType=DECIMAL},
+      		#{cashFee,jdbcType=DECIMAL},
+      		#{cashMax,jdbcType=DECIMAL},
+      		#{cashAmt,jdbcType=DECIMAL},
+      		#{cashType,jdbcType=VARCHAR},
+      		#{status,jdbcType=VARCHAR},
+      		#{applyDate,jdbcType=TIMESTAMP},
+      		#{dealUserId,jdbcType=VARCHAR},
+      		#{dealDate,jdbcType=TIMESTAMP},
+      		#{depositBank,jdbcType=VARCHAR},
+      		#{bankName,jdbcType=VARCHAR},
+      		#{accountNo,jdbcType=VARCHAR},
+      		#{name,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_cash WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Cash" >
+    	UPDATE biz_cash
+    	<set >
+     		cash_no = #{cashNo,jdbcType=VARCHAR},
+       		customer_id = #{customerId,jdbcType=VARCHAR},
+      		trade_rate = #{tradeRate,jdbcType=DECIMAL},
+       		cash_fee = #{cashFee,jdbcType=DECIMAL},
+      		cash_max = #{cashMax,jdbcType=DECIMAL},
+      		cash_amt = #{cashAmt,jdbcType=DECIMAL},
+      		cash_type = #{cashType,jdbcType=VARCHAR},
+      		status = #{status,jdbcType=VARCHAR},
+      		apply_date = #{applyDate,jdbcType=TIMESTAMP},
+      		deal_user_id = #{dealUserId,jdbcType=VARCHAR},
+      		deal_date = #{dealDate,jdbcType=TIMESTAMP},
+      		deposit_bank = #{depositBank,jdbcType=VARCHAR},
+      		bank_name = #{bankName,jdbcType=VARCHAR},
+      		account_no = #{accountNo,jdbcType=VARCHAR},
+      		name = #{name,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_cash
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_cash WHERE 1=1
+  			<if test="obj.cashNo != null" >AND cash_no = #{obj.cashNo}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Cash" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_cash WHERE 1=1
+    	<if test="cashNo != null">AND cash_no = #{cashNo}</if>
+    	<if test="customerId != null">AND customer_id = #{customerId}</if>
+  	</select>
+  	
+</mapper>

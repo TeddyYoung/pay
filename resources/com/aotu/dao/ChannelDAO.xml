@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.ChannelDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Channel" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="channel_no" property="channelNo" jdbcType="VARCHAR" />
+	    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+	    <result column="logo_picture_id" property="logoPictureId" jdbcType="VARCHAR" />
+	    <result column="channel_desc" property="channelDesc" jdbcType="VARCHAR" />
+	    <result column="trade_rate" property="tradeRate" jdbcType="DECIMAL" />
+	    <result column="normal_fee" property="normalFee" jdbcType="DECIMAL" />
+	    <result column="night_fee" property="nightFee" jdbcType="DECIMAL" />
+	    <result column="holiday_fee" property="holidayFee" jdbcType="DECIMAL" />
+	    <result column="cash_max" property="cashMax" jdbcType="DECIMAL" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="settle_day_third" property="settleDayThird" jdbcType="BIGINT" />
+	    <result column="settle_day" property="settleDay" jdbcType="BIGINT" />
+	    <result column="settle_type" property="settleType" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Channel" >
+    	INSERT INTO biz_channel
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		channel_no,
+      		channel_name,
+      		logo_picture_id,
+      		channel_desc,
+      		trade_rate,
+      		normal_fee,
+      		night_fee,
+      		holiday_fee,
+      		cash_max,
+      		status,
+      		settle_day_third,
+      		settle_day,
+      		settle_type,
+      		type,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{channelNo,jdbcType=VARCHAR},
+      		#{channelName,jdbcType=VARCHAR},
+      		#{logoPictureId,jdbcType=VARCHAR},
+      		#{channelDesc,jdbcType=VARCHAR},
+      		#{tradeRate,jdbcType=DECIMAL},
+      		#{normalFee,jdbcType=DECIMAL},
+      		#{nightFee,jdbcType=DECIMAL},
+      		#{holidayFee,jdbcType=DECIMAL},
+      		#{cashMax,jdbcType=DECIMAL},
+      		#{status,jdbcType=VARCHAR},
+      		#{settleDayThird,jdbcType=BIGINT},
+      		#{settleDay,jdbcType=BIGINT},
+      		#{settleType,jdbcType=VARCHAR},
+      		#{type,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_channel WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Channel" >
+    	UPDATE biz_channel
+    	<set >
+     		channel_no = #{channelNo,jdbcType=VARCHAR},
+       		channel_name = #{channelName,jdbcType=VARCHAR},
+      		logo_picture_id = #{logoPictureId,jdbcType=VARCHAR},
+       		channel_desc = #{channelDesc,jdbcType=VARCHAR},
+      		trade_rate = #{tradeRate,jdbcType=DECIMAL},
+      		normal_fee = #{normalFee,jdbcType=DECIMAL},
+      		night_fee = #{nightFee,jdbcType=DECIMAL},
+      		holiday_fee = #{holidayFee,jdbcType=DECIMAL},
+      		cash_max = #{cashMax,jdbcType=DECIMAL},
+      		status = #{status,jdbcType=VARCHAR},
+      		settle_day_third = #{settleDayThird,jdbcType=BIGINT},
+      		settle_day = #{settleDay,jdbcType=BIGINT},
+      		settle_type = #{settleType,jdbcType=VARCHAR},
+      		type = #{type,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_channel
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_channel WHERE 1=1 
+  			<if test="obj.channelNo != null" >AND channel_no = #{obj.channelNo}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryList" parameterType="com.aotu.entity.Channel" resultMap="BaseResultMap">
+  		SELECT * FROM biz_channel WHERE 1=1 
+  			<if test="status != null" >AND status = #{status}</if>
+  	</select> 
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Channel" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_channel WHERE 1=1 
+    	<if test="channelNo != null">AND channel_no = #{channelNo}</if>
+    	<if test="channelName != null">AND channel_name = #{channelName}</if>
+  	</select>
+  	
+</mapper>

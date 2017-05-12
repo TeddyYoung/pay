@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CompanyDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Company" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="company_no" property="companyNo" jdbcType="VARCHAR" />
+	    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="president" property="president" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="url" property="url" jdbcType="VARCHAR" />
+	    <result column="logo" property="logo" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="parent_company_id" property="parentCompanyId" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+	    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+	    <result column="dept_id" property="deptId" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Company" >
+    	INSERT INTO biz_company
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		company_no,
+      		short_name,
+      		full_name,
+      		address,
+      		president,
+      		phone,
+      		url,
+      		logo,
+      		type,
+      		parent_company_id,
+      		status,
+      		brand_id,
+      		dept_id,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{companyNo,jdbcType=VARCHAR},
+      		#{shortName,jdbcType=VARCHAR},
+      		#{fullName,jdbcType=VARCHAR},
+      		#{address,jdbcType=VARCHAR},
+      		#{president,jdbcType=VARCHAR},
+      		#{phone,jdbcType=VARCHAR},
+      		#{url,jdbcType=VARCHAR},
+      		#{logo,jdbcType=VARCHAR},
+      		#{type,jdbcType=VARCHAR},
+      		#{parentCompanyId,jdbcType=VARCHAR},
+      		#{status,jdbcType=VARCHAR},
+      		#{brandId,jdbcType=VARCHAR},
+      		#{deptId,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_company WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Company" >
+    	UPDATE biz_company
+    	<set >
+     		company_no = #{companyNo,jdbcType=VARCHAR},
+       		short_name = #{shortName,jdbcType=VARCHAR},
+      		full_name = #{fullName,jdbcType=VARCHAR},
+       		address = #{address,jdbcType=VARCHAR},
+      		president = #{president,jdbcType=VARCHAR},
+      		phone = #{phone,jdbcType=VARCHAR},
+      		url = #{url,jdbcType=VARCHAR},
+      		logo = #{logo,jdbcType=VARCHAR},
+      		type = #{type,jdbcType=VARCHAR},
+      		parent_company_id = #{parentCompanyId,jdbcType=VARCHAR},
+      		status = #{status,jdbcType=VARCHAR},
+      		brand_id = #{brandId,jdbcType=VARCHAR},
+      		dept_id = #{deptId,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_company
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT com.*, bra.brand_name FROM biz_company com, biz_brand bra WHERE 1=1 AND com.brand_id = bra.id
+  			<if test="obj.companyNo != null" >AND com.company_no = #{obj.companyNo}</if>
+  			<if test="obj.companyIds != null and obj.companyIds != ''" >AND com.id in (${obj.companyIds})</if>
+  			<if test="obj.deptId != null" >AND com.dept_id = #{obj.deptId}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Company" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_company WHERE 1=1
+    		<if test="companyNo != null" >AND company_no = #{companyNo}</if>
+    		<if test="companyIds != null and companyIds != ''" >AND id in (${companyIds})</if>
+    		<if test="deptId != null" >AND dept_id = #{deptId}</if>
+  	</select>
+  	
+  	<select id="queryList" parameterType="com.aotu.entity.Company" resultMap="BaseResultMap">
+  		SELECT * FROM biz_company WHERE 1=1
+  			<if test="companyNo != null" >AND company_no = #{companyNo}</if>
+  			<if test="companyIds != null and companyIds != ''" >AND id in (${companyIds})</if>
+  			<if test="deptId != null" >AND dept_id = #{deptId}</if>
+  	</select>
+  	
+  	<select id="querySubList" parameterType="com.aotu.entity.Company" resultMap="BaseResultMap">
+  		SELECT * FROM biz_company WHERE parent_company_id = #{id}
+  	</select>
+  	
+</mapper>

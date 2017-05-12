@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.AreaDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Area" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="tree_path" property="treePath" jdbcType="VARCHAR" />
+	    <result column="parent" property="parent" jdbcType="VARCHAR" />
+	    <result column="code" property="code" jdbcType="VARCHAR" />
+	    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+	    <result column="tel_code" property="telCode" jdbcType="VARCHAR" />
+	    <result column="locationx" property="locationx" jdbcType="DECIMAL" />
+	    <result column="locationy" property="locationy" jdbcType="DECIMAL" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Area" >
+    	INSERT INTO biz_area
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		full_name,
+      		name,
+      		tree_path,
+      		parent,
+      		code,
+      		zip_code,
+      		tel_code,
+      		locationx,
+      		locationy,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{fullName,jdbcType=VARCHAR},
+      		#{name,jdbcType=VARCHAR},
+      		#{treePath,jdbcType=VARCHAR},
+      		#{parent,jdbcType=VARCHAR},
+      		#{code,jdbcType=VARCHAR},
+      		#{zipCode,jdbcType=VARCHAR},
+      		#{telCode,jdbcType=VARCHAR},
+      		#{locationx,jdbcType=DECIMAL},
+      		#{locationy,jdbcType=DECIMAL},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_area WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Area" >
+    	UPDATE biz_area
+    	<set >
+     		id = #{id,jdbcType=VARCHAR},
+      		full_name = #{fullName,jdbcType=VARCHAR},
+      		name = #{name,jdbcType=VARCHAR},
+      		tree_path = #{treePath,jdbcType=VARCHAR},
+      		parent = #{parent,jdbcType=VARCHAR},
+      		code = #{code,jdbcType=VARCHAR},
+      		zip_code = #{zipCode,jdbcType=VARCHAR},
+      		tel_code = #{telCode,jdbcType=VARCHAR},
+      		locationx = #{locationx,jdbcType=DECIMAL},
+      		locationy = #{locationy,jdbcType=DECIMAL},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_area
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_area WHERE 1=1
+    	<if test="obj.name != null" >AND name = #{obj.name}</if>
+    	limit ${startIndex},${pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Area" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_area WHERE 1=1
+    	<if test="id != null">AND id = #{id}</if>
+    	<if test="name != null">AND name = #{name}</if>
+  	</select>
+  	
+</mapper>

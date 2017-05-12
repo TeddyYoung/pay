@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.PictureDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Picture" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="pic_name" property="picName" jdbcType="VARCHAR" />
+	    <result column="large_url" property="largeurl" jdbcType="VARCHAR" />
+	    <result column="medium_url" property="mediumurl" jdbcType="VARCHAR" />
+	    <result column="small_url" property="smallurl" jdbcType="VARCHAR" />
+	    <result column="large_height" property="largeHeight" jdbcType="BIGINT" />
+	    <result column="large_width" property="largeWidth" jdbcType="BIGINT" />
+	    <result column="medium_height" property="mediumHeight" jdbcType="BIGINT" />
+	    <result column="medium_width" property="mediumWidth" jdbcType="BIGINT" />
+	    <result column="small_height" property="smallHeight" jdbcType="BIGINT" />
+	    <result column="small_width" property="smallWidth" jdbcType="BIGINT" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Picture" >
+    	INSERT INTO biz_picture
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		pic_name,
+      		large_url,
+      		medium_url,
+      		small_url,
+      		large_height,
+      		large_width,
+      		medium_height,
+      		medium_width,
+      		small_height,
+      		small_width,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{picName,jdbcType=VARCHAR},
+      		#{largeurl,jdbcType=VARCHAR},
+      		#{mediumurl,jdbcType=VARCHAR},
+      		#{smallurl,jdbcType=VARCHAR},
+      		#{largeHeight,jdbcType=Integer},
+      		#{largeWidth,jdbcType=Integer},
+      		#{mediumHeight,jdbcType=Integer},
+      		#{mediumWidth,jdbcType=Integer},
+      		#{smallHeight,jdbcType=Integer},
+      		#{smallWidth,jdbcType=Integer},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_picture WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Picture" >
+    	UPDATE biz_picture
+    	<set >
+     		pic_name = #{picName,jdbcType=VARCHAR},
+       		large_url = #{largeurl,jdbcType=VARCHAR},
+      		medium_url = #{mediumurl,jdbcType=VARCHAR},
+       		small_url = #{smallurl,jdbcType=VARCHAR},
+      		large_height = #{largeHeight,jdbcType=Integer},
+      		large_width = #{largeWidth,jdbcType=Integer},
+      		medium_height = #{mediumHeight,jdbcType=Integer},
+      		medium_width = #{mediumWidth,jdbcType=Integer},
+      		small_height = #{smallHeight,jdbcType=Integer},
+      		small_width = #{smallWidth,jdbcType=Integer},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_picture
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_picture WHERE 1=1
+  			<if test="obj.smallWidth != null" >AND small_width = #{obj.smallWidth}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Picture" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_picture WHERE 1=1
+    		<if test="smallWidth != null" >AND small_width = #{smallWidth}</if>
+    		<if test="smallHeight != null" >AND small_height = #{smallHeight}</if>
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CustomerProfitDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.CustomerProfit" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="profit_no" property="profitNo" jdbcType="VARCHAR" />
+	    <result column="cutomer_id" property="cutomerId" jdbcType="VARCHAR" />
+	    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="trade_rate" property="tradeRate" jdbcType="DECIMAL" />
+	    <result column="customer_rate" property="customerRate" jdbcType="DECIMAL" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="trade_amt" property="tradeAmt" jdbcType="DECIMAL" />
+	    <result column="profit_amt" property="profitAmt" jdbcType="DECIMAL" />
+	    <result column="profit_date" property="profitDate" jdbcType="TIMESTAMP" />
+	    <result column="trade_customer_id" property="tradeCustomerId" jdbcType="VARCHAR" />
+	    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.CustomerProfit" >
+    	INSERT INTO biz_customer_profit
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		profit_no,
+      		cutomer_id,
+      		channel_id,
+      		trade_rate,
+      		customer_rate,
+      		type,
+      		trade_amt,
+      		profit_amt,
+      		profit_date,
+      		trade_customer_id,
+      		order_id,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{profitNo,jdbcType=VARCHAR},
+      		#{cutomerId,jdbcType=VARCHAR},
+      		#{channelId,jdbcType=VARCHAR},
+      		#{tradeRate,jdbcType=DECIMAL},
+      		#{customerRate,jdbcType=DECIMAL},
+      		#{type,jdbcType=VARCHAR},
+      		#{tradeAmt,jdbcType=DECIMAL},
+      		#{profitAmt,jdbcType=DECIMAL},
+      		#{profitDate,jdbcType=TIMESTAMP},
+      		#{tradeCustomerId,jdbcType=VARCHAR},
+      		#{orderId,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_customer_profit WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.CustomerProfit" >
+    	UPDATE biz_customer_profit
+    	<set >
+     		profit_no = #{profitNo,jdbcType=VARCHAR},
+       		cutomer_id = #{cutomerId,jdbcType=VARCHAR},
+      		channel_id = #{channelId,jdbcType=VARCHAR},
+       		trade_rate = #{tradeRate,jdbcType=DECIMAL},
+      		customer_rate = #{customerRate,jdbcType=DECIMAL},
+      		type = #{type,jdbcType=VARCHAR},
+      		trade_amt = #{tradeAmt,jdbcType=DECIMAL},
+      		profit_amt = #{profitAmt,jdbcType=DECIMAL},
+      		profit_date = #{profitDate,jdbcType=TIMESTAMP},
+      		trade_customer_id = #{tradeCustomerId,jdbcType=VARCHAR},
+      		order_id = #{orderId,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_customer_profit
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_customer_profit WHERE 1=1
+  			<if test="obj.orderId != null" >AND order_id = #{obj.orderId}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.CustomerProfit" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_customer_profit WHERE 1=1
+    		<if test="orderId != null" >AND order_id = #{orderId}</if>
+    		<if test="profitNo != null" >AND profit_no = #{profitNo}</if>
+  	</select>
+  	
+</mapper>

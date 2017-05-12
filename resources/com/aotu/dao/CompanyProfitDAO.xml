@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CompanyProfitDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.CompanyProfit" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="profit_no" property="profitNo" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+	    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="trade_rate" property="tradeRate" jdbcType="DECIMAL" />
+	    <result column="company_rate" property="companyRate" jdbcType="DECIMAL" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="trade_amt" property="tradeAmt" jdbcType="DECIMAL" />
+	    <result column="profit_amt" property="profitAmt" jdbcType="DECIMAL" />
+	    <result column="profit_date" property="profitDate" jdbcType="TIMESTAMP" />
+	    <result column="trade_customer_id" property="tradeCustomerId" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.CompanyProfit" >
+    	INSERT INTO biz_company_profit
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		profit_no,
+      		company_id,
+      		channel_id,
+      		trade_rate,
+      		company_rate,
+      		type,
+      		trade_amt,
+      		profit_amt,
+      		profit_date,
+      		trade_customer_id,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{profitNo,jdbcType=VARCHAR},
+      		#{companyId,jdbcType=VARCHAR},
+      		#{channelId,jdbcType=VARCHAR},
+      		#{tradeRate,jdbcType=DECIMAL},
+      		#{companyRate,jdbcType=DECIMAL},
+      		#{type,jdbcType=VARCHAR},
+      		#{tradeAmt,jdbcType=DECIMAL},
+      		#{profitAmt,jdbcType=DECIMAL},
+      		#{profitDate,jdbcType=TIMESTAMP},
+      		#{tradeCustomerId,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_company_profit WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.CompanyProfit" >
+    	UPDATE biz_company_profit
+    	<set >
+     		profit_no = #{profitNo,jdbcType=VARCHAR},
+       		company_id = #{companyId,jdbcType=VARCHAR},
+      		channel_id = #{channelId,jdbcType=VARCHAR},
+       		trade_rate = #{tradeRate,jdbcType=DECIMAL},
+      		company_rate = #{companyRate,jdbcType=DECIMAL},
+      		type = #{type,jdbcType=VARCHAR},
+      		trade_amt = #{tradeAmt,jdbcType=DECIMAL},
+      		profit_amt = #{profitAmt,jdbcType=DECIMAL},
+      		profit_date = #{profitDate,jdbcType=TIMESTAMP},
+      		trade_customer_id = #{tradeCustomerId,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_company_profit
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_company_profit WHERE 1=1
+  			<if test="obj.tradeCustomerId != null" >AND trade_customer_id = #{obj.tradeCustomerId}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.CompanyProfit" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_company_profit WHERE 1=1
+    		<if test="profitNo != null" >AND profit_no = #{profitNo}</if>
+    		<if test="companyId != null" >AND company_id = #{companyId}</if>
+  	</select>
+  	
+</mapper>

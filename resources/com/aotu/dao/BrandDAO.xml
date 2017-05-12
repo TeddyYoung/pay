@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.BrandDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.Brand" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="brand_no" property="brandNo" jdbcType="VARCHAR" />
+	    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="president" property="president" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.Brand" >
+    	INSERT INTO biz_brand
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		brand_no,
+      		brand_name,
+      		full_name,
+      		address,
+      		president,
+      		phone,
+      		status,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{brandNo,jdbcType=VARCHAR},
+      		#{brandName,jdbcType=VARCHAR},
+      		#{fullName,jdbcType=VARCHAR},
+      		#{address,jdbcType=VARCHAR},
+      		#{president,jdbcType=VARCHAR},
+      		#{phone,jdbcType=VARCHAR},
+      		#{status,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_brand WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.Brand" >
+    	UPDATE biz_brand
+    	<set >
+      		brand_no = #{brandNo,jdbcType=VARCHAR},
+      		brand_name = #{brandName,jdbcType=VARCHAR},
+      		full_name = #{fullName,jdbcType=VARCHAR},
+      		address = #{address,jdbcType=VARCHAR},
+      		president = #{president,jdbcType=VARCHAR},
+      		phone = #{phone,jdbcType=VARCHAR},
+      		status = #{status,jdbcType=VARCHAR},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_brand
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_brand WHERE 1=1
+    	<if test="obj.brandNo != null and obj.brandNo != ''" >AND brand_no = #{obj.brandNo}</if>
+    	<if test="obj.status != null and obj.status != ''" >AND status = #{obj.status}</if>
+    	<if test="obj.brandName != null and obj.brandName != ''" >AND brand_name like '%${obj.brandName}%'</if>
+    	limit ${startIndex},${pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.Brand" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_brand WHERE 1=1
+		<if test="brandNo != null and brandNo != ''" >AND brand_no = #{brandNo}</if>
+    	<if test="brandName != null" >AND brand_name like '%${brandName}%'</if>
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.CompanyAccountDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.CompanyAccount" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+	    <result column="balance_amt" property="balanceAmt" jdbcType="DECIMAL" />
+	    <result column="profit_amt" property="profitAmt" jdbcType="DECIMAL" />
+	    <result column="freeze_amt" property="freezeAmt" jdbcType="DECIMAL" />
+	    <result column="avaliable_amt" property="avaliableAmt" jdbcType="DECIMAL" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	    <result column="currency" property="currency" jdbcType="VARCHAR" />
+	    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.CompanyAccount" >
+    	INSERT INTO biz_company_account
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		company_id,
+      		balance_amt,
+      		profit_amt,
+      		freeze_amt,
+      		avaliable_amt,
+      		type,
+      		currency,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{companyId,jdbcType=VARCHAR},
+      		#{balanceAmt,jdbcType=DECIMAL},
+      		#{profitAmt,jdbcType=DECIMAL},
+      		#{freezeAmt,jdbcType=DECIMAL},
+      		#{avaliableAmt,jdbcType=DECIMAL},
+      		#{type,jdbcType=VARCHAR},
+      		#{currency,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_company_account WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.CompanyAccount" >
+    	UPDATE biz_company_account
+    	<set >
+     		company_id = #{companyId,jdbcType=VARCHAR},
+       		balance_amt = #{balanceAmt,jdbcType=VARCHAR},
+      		profit_amt = #{profitAmt,jdbcType=DECIMAL},
+       		freeze_amt = #{freezeAmt,jdbcType=DECIMAL},
+      		avaliable_amt = #{avaliableAmt,jdbcType=DECIMAL},
+      		type = #{type,jdbcType=DECIMAL},
+      		currency = #{currency,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_company_account
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_company_account WHERE 1=1
+  			<if test="obj.remark != null" >AND remark = #{obj.remark}</if>
+    	limit ${startIndex},#{pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.CompanyAccount" resultType="java.lang.Integer" >
+		SELECT count(*) FROM biz_company_account WHERE 1=1
+  	</select>
+  	
+</mapper>

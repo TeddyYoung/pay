@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aotu.dao.ChannelPluginDAO" >
+  	<resultMap id="BaseResultMap" type="com.aotu.entity.ChannelPlugin" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+	    <result column="plugin_key" property="pluginKey" jdbcType="VARCHAR" />
+	    <result column="plugin_value" property="pluginValue" jdbcType="VARCHAR" />
+	    <result column="plugin_name" property="pluginName" jdbcType="VARCHAR" />
+	    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<insert id="save" parameterType="com.aotu.entity.ChannelPlugin" >
+    	INSERT INTO biz_channel_plugin
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+      		id,
+      		channel_id,
+      		plugin_key,
+      		plugin_value,
+      		plugin_name,
+      		create_date,
+      		modify_date,
+      		remark
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		#{id,jdbcType=VARCHAR},
+      		#{channelId,jdbcType=VARCHAR},
+      		#{pluginKey,jdbcType=VARCHAR},
+      		#{pluginValue,jdbcType=VARCHAR},
+      		#{pluginName,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=TIMESTAMP},
+      		#{modifyDate,jdbcType=TIMESTAMP},
+      		#{remark,jdbcType=VARCHAR}
+    	</trim>
+  	</insert>
+  	
+  	<delete id="delete" parameterType="java.lang.String" >
+    	DELETE FROM biz_channel_plugin WHERE id = #{id, jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<update id="update" parameterType="com.aotu.entity.ChannelPlugin" >
+    	UPDATE biz_channel_plugin
+    	<set >
+     		id = #{id,jdbcType=VARCHAR},
+      		channel_id = #{channelId,jdbcType=VARCHAR},
+      		plugin_key = #{pluginKey,jdbcType=VARCHAR},
+      		plugin_value = #{pluginValue,jdbcType=VARCHAR},
+      		plugin_name = #{pluginName,jdbcType=VARCHAR},
+      		create_date = #{createDate,jdbcType=TIMESTAMP},
+      		modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      		remark = #{remark,jdbcType=VARCHAR}
+    	</set>
+    	WHERE id = #{id,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	SELECT * FROM biz_channel_plugin
+    		WHERE id = #{id,jdbcType=VARCHAR}
+  	</select>
+  
+  	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+  		SELECT * FROM biz_channel_plugin WHERE 1=1
+    	<if test="obj.channelId != null" >AND channel_id = #{obj.channelId}</if>
+    	<if test="obj.pluginKey != null and obj.pluginKey != ''" > AND plugin_key = #{obj.pluginKey}</if>
+    	<if test="obj.pluginValue != null and obj.pluginValue != ''" > AND plugin_value like '%${obj.pluginValue}%'</if>
+    	limit ${startIndex},${pageSize}
+  	</select>
+  	
+  	<select id="queryCount" parameterType="com.aotu.entity.ChannelPlugin" resultType="java.lang.Integer">
+		SELECT count(*) FROM biz_channel_plugin WHERE 1=1
+    	<if test="channelId != null and channelId != ''" > AND channel_id = #{channelId}</if>
+    	<if test="pluginKey != null and pluginKey != ''" > AND plugin_key like '%${pluginKey}%'</if>
+    	
+  	</select>
+  	
+  	<select id="queryList" parameterType="com.aotu.entity.ChannelPlugin" resultMap="BaseResultMap">
+		SELECT * FROM biz_channel_plugin WHERE 1=1
+    	<if test="channelId != null">AND channel_id = #{channelId}</if>
+  	</select>
+  	
+</mapper>
